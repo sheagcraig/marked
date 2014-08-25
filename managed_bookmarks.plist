@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>FolderName</key>
+	<string>Managed Bookmarks</string>
+    <key>Bookmarks</key>
+    <array>
+		<dict>
+			<key>title</key>
+			<string>Github for this project</string>
+			<key>URL</key>
+			<string>https://github.com/sheagcraig/ensure-safari-bookmarks</string>
+		</dict>
+    </array>
+</dict>
+</plist>
