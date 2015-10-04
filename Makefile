@@ -18,5 +18,6 @@ pack-Library-Application-Support-Marked: marked
 	@sudo ${CP} FoundationPlist.py ${WORK_D}/Library/Application\ Support/marked
 	@sudo ${CP} SafariBookmarks.py ${WORK_D}/Library/Application\ Support/marked
 	@sudo ${CP} managed_bookmarks.plist ${WORK_D}/Library/Application\ Support/marked
+	@sudo ${CP} explanation.html ${WORK_D}/Library/Application\ Support/marked
 	@sudo chown -R 0:80 ${WORK_D}/Library/Application\ Support/marked
 	@sudo chmod -R 755 ${WORK_D}/Library/Application\ Support/marked
