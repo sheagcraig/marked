@@ -6,7 +6,7 @@
 	<string>com.github.sheagcraig.marked</string>
 <key>ProgramArguments</key>
 	<array>
-        <string>/Library/APplication Support/marked/marked.py</string>
+        <string>/Library/Application Support/marked/marked.py</string>
 	</array>
 	<key>RunAtLoad</key>
 	<true/>
