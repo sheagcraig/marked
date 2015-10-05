@@ -2,6 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+    <key>OrganizationName</key>
+	<string>My Organization</string>
+    <key>SupportWebsite</key>
+    <string>http://zendesk.com</string>
+    <key>SupportEmail</key>
+    <string>support@my.org</string>
     <key>FolderName</key>
 	<string>Managed Bookmarks</string>
     <key>Bookmarks</key>

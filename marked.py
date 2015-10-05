@@ -29,14 +29,18 @@ import shutil
 import FoundationPlist
 import SafariBookmarks
 
-
-MANAGED_BOOKMARKS = "/Library/Application Support/marked/managed_bookmarks.plist"
-EXPLANATION = "/Library/Application Support/marked/explanation.html"
-USER_EXPLANATION = os.path.expanduser("~/Library/Application Support/marked/explanation.html")
+# Edit ORGANIZATION to specify your organization's name automatically
+# in the explanation.html.
+MARKED_FOLDER = "/Library/Application Support/marked"
+MANAGED_BOOKMARKS = os.path.join(MARKED_FOLDER, "managed_bookmarks.plist")
+EXPLANATION = os.path.join(MARKED_FOLDER, "explanation.html")
+USER_FOLDER = os.path.expanduser("~/Library/Application Support/marked")
+USER_EXPLANATION = os.path.join(USER_FOLDER, "explanation.html")
 BOOKMARKS_FILE = os.path.expanduser("~/Library/Safari/Bookmarks.plist")
 
 
-def move_unwanted_bookmarks(bookmarks, managed_folder, managed_bookmarks):
+def move_unwanted_bookmarks(bookmarks, managed_folder,
+                            managed_bookmarks_plist):
     """Move difference of managed bms and current bms into backup."""
     # For each bookmark in the managed folder, if it's one we want,
     # remove it, as it will get added in again later. If any are left
@@ -45,6 +49,7 @@ def move_unwanted_bookmarks(bookmarks, managed_folder, managed_bookmarks):
 
     # We have to remove _after_ collecting the good ones because
     # NSCFArray can't be mutated while enumerating.
+    managed_bookmarks = managed_bookmarks_plist["Bookmarks"]
     removals = []
     for bookmark in managed_folder["Children"]:
         for managed_bookmark in managed_bookmarks:
@@ -58,24 +63,41 @@ def move_unwanted_bookmarks(bookmarks, managed_folder, managed_bookmarks):
     if managed_folder["Children"]:
         with open(EXPLANATION, "r") as explanation:
             explanation_text = explanation.read()
+        explanation_text = sub_text(explanation_text, managed_bookmarks_plist)
 
-        re.sub(
-            r'<span class="managed_folder">.*</span>',
-            '<span class="managed_folder">%s</span>' % managed_folder["Title"],
-            explanation_text)
-
-        if not os.path.exists(os.path.dirname(USER_EXPLANATION)):
-            os.mkdir(os.path.dirname(USER_EXPLANATION))
+        if not os.path.exists(USER_FOLDER):
+            os.mkdir(USER_FOLDER)
 
         with open(USER_EXPLANATION, "w") as explanation:
             explanation.write(explanation_text)
 
-        bm = SafariBookmarks.Bookmark("Why is This Here?", "file://%s" %
-                                      USER_EXPLANATION)
+        assets = os.path.join(USER_FOLDER, "assets")
+        if os.path.exists(assets):
+            shutil.rmtree(assets)
+        shutil.copytree(os.path.join(MARKED_FOLDER, "assets"), assets)
+
+        images = os.path.join(USER_FOLDER, "images")
+        if os.path.exists(images):
+            shutil.rmtree(images)
+        shutil.copytree(os.path.join(MARKED_FOLDER, "images"), images)
+
+        bm = SafariBookmarks.Bookmark("Why are my Bookmarks Here?", "file://%s"
+                                      % USER_EXPLANATION)
         managed_folder["Children"].append(bm)
 
         timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
         managed_folder["Title"] = "Recovered Bookmarks-%s" % timestamp
+
+
+def sub_text(text, plist):
+    text = re.sub(
+        r'<span class="managed_folder">.*</span>',
+        '<span class="managed_folder">%s</span>' % plist["FolderName"],
+        text)
+    text = re.sub(r'Organization_Name', plist["OrganizationName"], text)
+    text = re.sub(r'SUPPORT_WEBSITE', plist["SupportWebsite"], text)
+    text = re.sub(r'SUPPORT_EMAIL', plist["SupportEmail"], text)
+    return text
 
 
 def main():
@@ -94,7 +116,8 @@ def main():
     # If managed folder exists, and it has unmanaged bookmarks,
     # rename it.
     if managed_folder:
-        move_unwanted_bookmarks(bookmarks, managed_folder, managed_bookmarks)
+        move_unwanted_bookmarks(bookmarks, managed_folder,
+                                managed_bookmarks_plist)
 
     # Try to find again (will be gone if moved).
     managed_folder = bookmarks.find(managed_bookmark_folder,
