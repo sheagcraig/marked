@@ -21,6 +21,8 @@ So I made this. Here's how it works:
 - It then populates the managed bookmark folder with only the bookmarks
   configured.
 
+![Screenshot of help page](/Where_are_my_Bookmarks_.png)
+
 ## Configuration
 
 You will probably want to customize the managed bookmarks and the "Why are my
