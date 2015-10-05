@@ -15,9 +15,9 @@ So I made this. Here's how it works:
 - During each run, the script moves any bookmarks from the managed folder that
   are not present in the `managed_bookmarks.plist` to a folder named `Recovered
   Bookmarks-<Timestamp>`.
-	- It also adds a link to a local html page with more details for users to
-	  read.
-	  - The help page is dynamically configured with data from the `managed_bookmarks.plist`.
+    - It also adds a link to a local html page with more details for users to
+      read.
+      - The help page is dynamically configured with data from the `managed_bookmarks.plist`.
 - It then populates the managed bookmark folder with only the bookmarks
   configured.
 
@@ -37,15 +37,15 @@ Top level keys include:
   on the help page.
 - `Bookmarks`: An array of dicts reperenting the managed bookmarks. These will
   be added in the order they are specified.
-	- Each bookmark should be a dict, with keys `title` and `URL`, like so:
-			```
-			<dict>
-			  <key>title</key>
-			  <string>Github for this project</string>
-			  <key>URL</key>
-			  <string>https://github.com/sheagcraig/ensure-safari-bookmarks</string>
-			</dict>
-			```
+    - Each bookmark should be a dict, with keys `title` and `URL`, like so:
+            ```
+            <dict>
+              <key>title</key>
+              <string>Github for this project</string>
+              <key>URL</key>
+              <string>https://github.com/sheagcraig/ensure-safari-bookmarks</string>
+            </dict>
+            ```
 
 The help page includes an image that is left pleasingly blank by default.
 However, if you would like to substitute your organization's logo or a photo,
