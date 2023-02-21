@@ -27,7 +27,8 @@ import FoundationPlist
 
 class SafariBookmarks(object):
     """Encapsulate a Bookmarks.plist file in a more useful way."""
-    def __init__(self, filename):
+    def __init__(self, filename=os.path.expanduser(
+            "~/Library/Safari/Bookmarks.plist")):
         self.filename = filename
         try:
             self._bm = FoundationPlist.readPlist(self.filename)
